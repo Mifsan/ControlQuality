@@ -68,7 +68,7 @@ bool IsValidArgument(const char* argv)
 	{
 		string checkStr = argv;
 		regex_replace(checkStr, regex(","), ".");
-		float checkTransforming = stoi(argv);
+		float checkTransforming = stoi(checkStr);
 		if (checkTransforming <= 0)
 		{
 			return false;
