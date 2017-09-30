@@ -15,7 +15,7 @@ int main(int argc, char* argv[])
 {
 	if (!IsValidArgumentsCount(argc))
 	{
-		cout << "flipbyte.exe using: <a> <b> <c>" << endl;
+		cout << "triangle.exe using: <a> <b> <c>" << endl;
 		return 1;
 	}
 
@@ -66,6 +66,8 @@ bool IsValidArgument(const char* argv)
 {
 	try
 	{
+		string checkStr = argv;
+		regex_replace(checkStr, regex(","), ".");
 		float checkTransforming = stoi(argv);
 		if (checkTransforming <= 0)
 		{
