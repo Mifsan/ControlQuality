@@ -7,9 +7,11 @@ static const int ARGUMENTS_COUNT = 4;
 
 using namespace std;
 
+bool IsEqual(const double x, const double y);
+bool IsMore(const double x, const double y);
 bool IsValidArgument(const char* argv);
 bool IsValidArgumentsCount(const int & argc);
-string TypeOfTriangle(const float a, const float b, const float c);
+string TypeOfTriangle(const double a, const double b, const double c);
 
 int main(int argc, char* argv[])
 {
@@ -23,31 +25,42 @@ int main(int argc, char* argv[])
 	{
 		if (!IsValidArgument(argv[i]))
 		{
-			cout << "Invalid argument, argument should be <positive float number>" << endl;
+			cout << "Invalid argument, argument should be <positive double number>" << endl;
 			return 1;
 		}
 	}
-
-	float a = stof(argv[1]);
-	float b = stof(argv[2]);
-	float c = stof(argv[3]);
-
+	string arg1 = regex_replace(argv[1], regex(","), ".");
+	string arg2 = regex_replace(argv[2], regex(","), ".");
+	string arg3 = regex_replace(argv[3], regex(","), ".");
+	double a = stod(arg1);
+	double b = stod(arg2);
+	double c = stod(arg3);
 	cout << TypeOfTriangle(a, b, c) << endl;
 
 	return 0;
 }
 
-string TypeOfTriangle(const float a, const float b, const float c)
+bool IsEqual(const double x, const double y)
 {
-	if (!((a + b > c) && (a + c > b) && (b + c > a)))
+	return fabs(x - y) < FLT_EPSILON;
+}
+
+bool IsMore(const double x, const double y)
+{
+	return (!IsEqual(x, y) && x > y);
+}
+
+string TypeOfTriangle(const double a, const double b, const double c)
+{
+	if (!((IsMore(a + b, c)) && (IsMore(a + c, b)) && IsMore(b + c, a)))
 	{
 		return "Not a triangle";
 	}
-	else if ((a == b) && (b == c))
+	else if ((IsEqual(a, b)) && IsEqual(b, c))
 	{
 		return "Equilateral triangle";
 	}
-	else if ((a == b) || (b == c) || (a == c))
+	else if (IsEqual(a, b) || IsEqual(b, c) || IsEqual(a, c))
 	{
 		return "Isosceles triangle";
 	}
@@ -66,9 +79,8 @@ bool IsValidArgument(const char* argv)
 {
 	try
 	{
-		string checkStr = argv;
-		regex_replace(checkStr, regex(","), ".");
-		float checkTransforming = stoi(checkStr);
+		string checkStr = regex_replace(argv, regex(","), ".");
+		double checkTransforming = stod(checkStr);
 		if (checkTransforming <= 0)
 		{
 			return false;

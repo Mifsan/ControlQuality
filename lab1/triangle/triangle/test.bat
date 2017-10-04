@@ -4,6 +4,18 @@ rem test with an empty list of arguments
 %PROGRAM%
 if %ERRORLEVEL% EQU '0' goto err
 
+rem test with a text in third argument
+%PROGRAM% 1 2 c
+if %ERRORLEVEL% EQU '0' goto err
+
+rem test with a text in second argument
+%PROGRAM% 1 b 3
+if %ERRORLEVEL% EQU '0' goto err
+
+rem test with a text in first argument
+%PROGRAM% a 2 3
+if %ERRORLEVEL% EQU '0' goto err
+
 rem test with a lot of arguments
 %PROGRAM% 6 7 8 9 10 3
 if %ERRORLEVEL% EQU '0' goto err
@@ -12,8 +24,16 @@ rem test with a argument that equal 0
 %PROGRAM% 0 2 4
 if %ERRORLEVEL% EQU '0' goto err
 
-rem test with a argument that less than 0
+rem test with a first argument that less than 0
 %PROGRAM% -3 5 4
+if %ERRORLEVEL% EQU '0' goto err
+
+rem test with a second argument that less than 0
+%PROGRAM% 3 -5 4
+if %ERRORLEVEL% EQU '0' goto err
+
+rem test with a third argument that less than 0
+%PROGRAM% 3 5 -4
 if %ERRORLEVEL% EQU '0' goto err
 
 rem test with arguments for equilateral triangle
@@ -36,6 +56,12 @@ if %ERRORLEVEL% EQU '1' goto err
 
 rem test with arguments for common triangle
 %PROGRAM% 5 6 8 > "%TEMP%\output.txt"
+if %ERRORLEVEL% EQU '1' goto err
+fc.exe "%TEMP%\output.txt" common_triangle.txt
+if %ERRORLEVEL% EQU '1' goto err
+
+rem test with arguments for common triangle
+%PROGRAM% 2,5 3 5 > "%TEMP%\output.txt"
 if %ERRORLEVEL% EQU '1' goto err
 fc.exe "%TEMP%\output.txt" common_triangle.txt
 if %ERRORLEVEL% EQU '1' goto err
